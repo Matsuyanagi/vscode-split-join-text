@@ -25,6 +25,8 @@ function escapeRegExp( s: string ) : string {
  * @param option コマンドオプション
  */
 function splitText( option?: any ) {
+	const defaultSeparator = vscode.workspace.getConfiguration( "splitJoinText" ).get<string>( "defaultSeparator" )
+
 	const options: vscode.InputBoxOptions = {
 		ignoreFocusOut: true,
 		placeHolder: 'symbol',

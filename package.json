@@ -32,6 +32,34 @@
                 "title": "Split Text with separator",
                 "category": "SplitJoinText"
             }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Split Join Text Configuration",
+            "properties": {
+                "splitJoinText.defaultSeparator": {
+                    "type": "string",
+                    "default":",",
+                    "description": "Default separator."
+                }
+            },
+            "default": {
+                "defaultSeparator": ","
+            }
+        },
+        "keybindings": [
+            {
+                "command": "extension.splitText",
+                "key": "ctrl+k ctrl+1",
+                "mac": "ctrl+k ctrl+1",
+                "when": "editorTextFocus && !editorReadonly"
+            },
+            {
+                "command": "extension.joinText",
+                "key": "ctrl+k ctrl+2",
+                "mac": "ctrl+k ctrl+2",
+                "when": "editorTextFocus && !editorReadonly"
+            }
         ]
     },
     "scripts": {
