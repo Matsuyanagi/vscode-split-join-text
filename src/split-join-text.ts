@@ -32,6 +32,8 @@ function splitText( option?: any ) {
 		placeHolder: 'symbol',
 		prompt: 'separator',
 	}
+	options.value = defaultSeparator
+	
 	vscode.window.showInputBox( options ).then( inputSeparatorCharacter => {
 		if ( !inputSeparatorCharacter ) {
 			return
