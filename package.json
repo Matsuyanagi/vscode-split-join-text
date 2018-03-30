@@ -16,20 +16,32 @@
         "edit"
     ],
     "activationEvents": [
+        "onCommand:extension.splitText",
+        "onCommand:extension.splitTextAndDeleteSeparator",
         "onCommand:extension.joinText",
-        "onCommand:extension.splitText"
+        "onCommand:extension.joinTextAndDeleteIndent"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [
+            {
+                "command": "extension.splitText",
+                "title": "Split Text with separator",
+                "category": "SplitJoinText"
+            },
+            {
+                "command": "extension.splitTextAndDeleteSeparator",
+                "title": "Split Text with separator, and delete separator",
+                "category": "SplitJoinText"
+            },
             {
                 "command": "extension.joinText",
                 "title": "Join Text with separator",
                 "category": "SplitJoinText"
             },
             {
-                "command": "extension.splitText",
-                "title": "Split Text with separator",
+                "command": "extension.joinTextAndDeleteIndent",
+                "title": "Join Text with separator, and delete indent",
                 "category": "SplitJoinText"
             }
         ],
