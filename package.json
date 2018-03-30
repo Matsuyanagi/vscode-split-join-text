@@ -1,7 +1,7 @@
 {
     "name": "split-join-text",
-    "displayName": "split-join-text",
-    "description": "",
+    "displayName": "Split Join texts",
+    "description": "Splitting and joining texts with separators.",
     "version": "0.0.1",
     "publisher": "Matsuyanagi",
     "engines": {
@@ -10,15 +10,27 @@
     "categories": [
         "Other"
     ],
+    "keywords": [
+        "join",
+        "split",
+        "edit"
+    ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "onCommand:extension.joinText",
+        "onCommand:extension.splitText"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [
             {
-                "command": "extension.sayHello",
-                "title": "Hello World"
+                "command": "extension.joinText",
+                "title": "Join Text with separator",
+                "category": "SplitJoinText"
+            },
+            {
+                "command": "extension.splitText",
+                "title": "Split Text with separator",
+                "category": "SplitJoinText"
             }
         ]
     },
