@@ -30,23 +30,19 @@
         "commands": [
             {
                 "command": "extension.splitText",
-                "title": "Split Text with separator",
-                "category": "SplitJoinText"
+                "title": "Split Text with separator"
             },
             {
                 "command": "extension.splitTextAndDeleteSeparator",
-                "title": "Split Text with separator, and delete separator",
-                "category": "SplitJoinText"
+                "title": "Split Text with separator, and delete separator"
             },
             {
                 "command": "extension.joinText",
-                "title": "Join Text with separator",
-                "category": "SplitJoinText"
+                "title": "Join Text with separator"
             },
             {
                 "command": "extension.joinTextAndDeleteIndent",
-                "title": "Join Text with separator, and delete indent",
-                "category": "SplitJoinText"
+                "title": "Join Text with separator, and delete indent"
             }
         ],
         "configuration": {
