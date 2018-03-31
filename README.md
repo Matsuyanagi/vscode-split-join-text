@@ -12,11 +12,11 @@ Specify a separator and join texts of a few rows of lines.
 * extension.joinText : Specify a separator and join texts of a few rows of lines.
 * extension.joinTextAndDeleteIndent : Specify a separator and join texts of a few rows of lines, and indent spaces.(/^\s*/)
 
-
+  
 ## Extension Settings
 
-| parameter name  | description  | type  | default value  |
-|---|---|---|---|
-| splitJoinText.defaultSeparator  | default separator | string  | ","  |
+| parameter name                 | description       | type   | default value |
+| ------------------------------ | ----------------- | ------ | ------------- |
+| splitJoinText.defaultSeparator | default separator | string | ","           |
 
 
