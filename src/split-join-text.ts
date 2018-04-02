@@ -7,24 +7,17 @@ const SPLIT_TEXT_AND_DELETE_SEPARATOR = 'extension.splitTextAndDeleteSeparator'
 const JOIN_TEXT = 'extension.joinText'
 const JOIN_TEXT_AND_DELETE_INDENT = 'extension.joinTextAndDeleteIndent'
 
-export const packaged_commands: { [ key: string ]: ( args: any ) => void } = {
-	[ SPLIT_TEXT ]: ( option: any ) => {
-		splitText( option )
-	},
-	[ SPLIT_TEXT_AND_DELETE_SEPARATOR ]: ( option: any ) => {
-		splitTextAndDeleteSeparator( option )
-	},
-	[ JOIN_TEXT ]: ( option: any ) => {
-		joinText( option )
-	},
-	[ JOIN_TEXT_AND_DELETE_INDENT ]: ( option: any ) => {
-		joinTextAndDeleteIndent( option )
-	}
-}
+export const commands_map = new Map<string, ( args: any ) => void>( [
+	[ SPLIT_TEXT, ( option: any ) => { splitText( option ) } ],
+	[ SPLIT_TEXT_AND_DELETE_SEPARATOR, ( option: any ) => { splitTextAndDeleteSeparator( option ) } ],
+	[ JOIN_TEXT, ( option: any ) => { joinText( option ) } ],
+	[ JOIN_TEXT_AND_DELETE_INDENT, ( option: any ) => { joinTextAndDeleteIndent( option ) } ]
+] )
 
 // 文字列中の正規表現記号をエスケープする
+// 	\t を検索できるように '\' はエスケープしない
 function escapeRegExp( s: string ) : string {
-	return s.replace( /[-\/\\^$*+?.()|[\]{}]/g, '\\$&' )
+	return s.replace( /[-\/^$*+?.()|[\]{}]/g, "\\$&" )
 }
 
 
@@ -33,6 +26,9 @@ function escapeRegExp( s: string ) : string {
  * @param option コマンドオプション
  */
 function splitText( option?: any ) {
+	if ( !option ) {
+		option = {}
+	}
 	const defaultSeparator = vscode.workspace.getConfiguration( "splitJoinText" ).get<string>( "defaultSeparator" )
 
 	const options: vscode.InputBoxOptions = {
@@ -54,10 +50,11 @@ function splitText( option?: any ) {
 		//	正規表現記号をエスケープする
 		const separatorCharacter = escapeRegExp( inputSeparatorCharacter )
 		const replaceRegexp = new RegExp( separatorCharacter, 'g' )
+		// const replaceRegexp = new RegExp( inputSeparatorCharacter, 'g' )
 
 		const editor: vscode.TextEditor = vscode.window.activeTextEditor
 
-		const deleteSeparator = option ? option.deleteSeparator : false
+		const deleteSeparator = !!option.deleteSeparator
 		//	カーソル行、選択行を取得する
 		//	ソートして大きい行の方から置き換える
 		const selections = [ ...editor.selections ].sort( ( a, b ) => -( a.start.line - b.start.line ) )
@@ -67,7 +64,7 @@ function splitText( option?: any ) {
 		selections.forEach( ( select ) => {
 			let target_range = new vscode.Range( select.start, select.end )
 			if ( select.isEmpty ) {
-				// 選択範囲が無い。カーソル行
+				// 選択範囲が無い。カーソル行を処理する
 				const line = editor.document.lineAt( select.start.line )
 				target_range = new vscode.Range( line.range.start, line.range.end )
 			}
@@ -106,6 +103,9 @@ function splitTextAndDeleteSeparator( option?: any ) {
  * @param option オプション
  */
 function joinText( option?: any ) {
+	if ( !option ) {
+		option = {}
+	}
 	const options: vscode.InputBoxOptions = {
 		ignoreFocusOut: true,
 		placeHolder: 'separator letter',
@@ -124,14 +124,13 @@ function joinText( option?: any ) {
 
 		const editor: vscode.TextEditor = vscode.window.activeTextEditor
 
-		const deleteIndent = option ? option.deleteIndent : false
+		const deleteIndent = !!option.deleteIndent
 
 		//	カーソル行、選択行を取得する
 		//	ソートして大きい行の方から置き換える
 		const selections = [ ...editor.selections ].sort( ( a, b ) => -( a.start.line - b.start.line ) )
 
 		//	選択にかかる行は先頭から最後までを置き換える
-
 		selections.forEach( ( select ) => {
 			if ( select.isEmpty ) {
 				// 選択範囲が無い
