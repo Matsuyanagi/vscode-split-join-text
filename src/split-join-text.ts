@@ -50,7 +50,6 @@ function splitText( option?: any ) {
 		//	正規表現記号をエスケープする
 		const separatorCharacter = escapeRegExp( inputSeparatorCharacter )
 		const replaceRegexp = new RegExp( separatorCharacter, 'g' )
-		// const replaceRegexp = new RegExp( inputSeparatorCharacter, 'g' )
 
 		const editor: vscode.TextEditor = vscode.window.activeTextEditor
 
@@ -59,26 +58,25 @@ function splitText( option?: any ) {
 		//	ソートして大きい行の方から置き換える
 		const selections = [ ...editor.selections ].sort( ( a, b ) => -( a.start.line - b.start.line ) )
 
-		//	選択にかかる行は先頭から最後までを置き換える
+		editor.edit( ed => {
+			selections.forEach( select => {
+				//	選択にかかる行は先頭から最後までを置き換える
+				let target_range = new vscode.Range( select.start, select.end )
+				if ( select.isEmpty ) {
+					// 選択範囲が無い。カーソル行を処理する
+					const line = editor.document.lineAt( select.start.line )
+					target_range = new vscode.Range( line.range.start, line.range.end )
+				}
 
-		selections.forEach( ( select ) => {
-			let target_range = new vscode.Range( select.start, select.end )
-			if ( select.isEmpty ) {
-				// 選択範囲が無い。カーソル行を処理する
-				const line = editor.document.lineAt( select.start.line )
-				target_range = new vscode.Range( line.range.start, line.range.end )
-			}
+				let text = editor.document.getText( target_range )
 
-			let text = editor.document.getText( target_range )
+				if ( deleteSeparator ) {
+					text = text.replace( replaceRegexp, "\n" )
+				} else {
+					text = text.replace( replaceRegexp, separatorCharacter + "\n" )
+				}
 
-			if ( deleteSeparator ) {
-				text = text.replace( replaceRegexp, "\n" )
-			} else {
-				text = text.replace( replaceRegexp, separatorCharacter + "\n" )
-			}
-
-			//	置き換える
-			editor.edit( ( ed ) => {
+				//	置き換える
 				ed.replace( target_range, text )
 			} )
 		} )
@@ -130,24 +128,22 @@ function joinText( option?: any ) {
 		//	ソートして大きい行の方から置き換える
 		const selections = [ ...editor.selections ].sort( ( a, b ) => -( a.start.line - b.start.line ) )
 
-		//	選択にかかる行は先頭から最後までを置き換える
-		selections.forEach( ( select ) => {
-			if ( select.isEmpty ) {
-				// 選択範囲が無い
-				return
-			}
-			let target_range = new vscode.Range( select.start, select.end )
-			let text = editor.document.getText( target_range )
-
-			if ( deleteIndent ) {
-				text = text.replace( /\r?\n\s*(?=.)/g, separatorCharacter ).replace( /^\s+/, "" )
-			} else {
-				text = text.replace( /\r?\n(?=.)/g, separatorCharacter )
-			}
-
-			//	置き換える
-			editor.edit( ( ed ) => {
-				ed.replace( target_range, text )
+		editor.edit( ed => {
+			//	選択にかかる行は先頭から最後までを置き換える
+			selections.forEach( select => {
+				if ( select.isEmpty ) {
+					// 選択範囲が無い。JOIN対象行が無い
+					return
+				}
+				let text = editor.document.getText( select )
+				
+				if ( deleteIndent ) {
+					text = text.replace( /\r?\n\s*(?=.)/g, separatorCharacter ).replace( /^\s+/, "" )
+				} else {
+					text = text.replace( /\r?\n(?=.)/g, separatorCharacter )
+				}
+				//	置き換える
+				ed.replace( select, text )
 			} )
 		} )
 	} )

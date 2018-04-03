@@ -2,7 +2,7 @@
     "name": "split-join-text",
     "displayName": "Split Join texts",
     "description": "Splitting and joining texts with separator.",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "Matsuyanagi",
     "engines": {
         "vscode": "^1.21.0"
