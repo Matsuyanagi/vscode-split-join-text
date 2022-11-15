@@ -91,7 +91,7 @@
 		"@typescript-eslint/eslint-plugin": "^4.29.0",
 		"@typescript-eslint/parser": "^4.29.0",
 		"glob": "^7.1.7",
-		"mocha": "^9.0.3",
+		"mocha": "^9.2.2",
 		"typescript": "^4.3.5",
 		"vscode-test": "^1.6.1"
     }
