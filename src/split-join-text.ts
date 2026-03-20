@@ -55,8 +55,7 @@ function splitText( option?: any ) {
 
 		const deleteSeparator = !!option.deleteSeparator
 		//	カーソル行、選択行を取得する
-		//	ソートして大きい行の方から置き換える
-		const selections = [ ...editor.selections ].sort( ( a, b ) => -( a.start.line - b.start.line ) )
+		const selections = editor.selections
 
 		editor.edit( ed => {
 			selections.forEach( select => {
@@ -73,7 +72,7 @@ function splitText( option?: any ) {
 				if ( deleteSeparator ) {
 					text = text.replace( replaceRegexp, "\n" )
 				} else {
-					text = text.replace( replaceRegexp, separatorCharacter + "\n" )
+					text = text.replace( replaceRegexp, inputSeparatorCharacter + "\n" )
 				}
 
 				//	置き換える
